@@ -1,0 +1,293 @@
+{% liquid
+  assign padding_top_bottom = section.settings.padding_top_bottom
+  assign padding_left_right = section.settings.padding_left_right
+  assign bg = section.settings.section_bg
+  assign bg_checkbox = section.settings.section_bg_checkbox
+  assign bg_color = section.settings.section_bg_color
+%}
+
+<style>
+  #{{ section.id }} {
+    padding: {{ padding_top_bottom }}px {{ padding_left_right }}px;
+    {% if bg_checkbox %}
+      background-size: cover;
+      background-position: center center;
+      overflow: visible;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-position: 50%;
+    {% endif %}
+  }
+  .cms-block-inner {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+    justify-content: center;
+  }
+  .cms-item {
+    position: relative;
+    transition: all 0.3s ease-in;
+  }
+  .cms-item-inner {
+    height: 100%;
+    margin: 20px 15px;
+    margin: 20px 15px;
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    transition: all .3s ease-in;
+    box-shadow: 0 5px 8px -5px rgba(98, 98, 98, 0.25), 0 15px 16px -15px rgba(98, 98, 98, 0.25), 0 25px 32px -25px rgba(98, 98, 98, 0.25);
+    border-radius: {{ section.settings.column_img_radius }}px;
+  }
+  .cms-item-image {
+    height: 100%;
+  }
+  .cms-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    max-height: 250px;
+    transition: all .3s ease;
+  }
+  .cms-item-inner > a {
+    display: block;
+    height: 100%;
+  }
+  .cms-item-link {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    background: #222;
+    color: #fff;
+    padding: 3px 15px;
+    font-size: 14px;
+    border-radius: 9px;
+    display: flex;
+    z-index: 1;
+  }
+  span.cms-item-link-icon svg {
+    width: 14px;
+  }
+  span.cms-item-link-icon {
+    display: flex;
+    transition: all 0.3s ease;
+  }
+  
+  /* HOVER EFFECT */
+  .cms-item:hover .cms-item-inner {
+    transform: scale(.98);
+  }
+  .cms-item:hover img {
+    transform: scale(1.1);
+    transition-duration: 1s;
+  }
+  .cms-item:hover span.cms-item-link-icon {
+    padding-left: 10px;
+  }
+  
+  @media only screen and (max-width: 641px){
+    .hide-mobile{
+      display: none; 
+    }
+    #{{ section.id }} {
+      display: none;
+    }
+  }
+  @media only screen and (min-width: 642px) and (max-width: 999px){
+    .hide-tablet{
+      display: none; 
+    }
+  }
+  @media only screen and (min-width: 999px){
+    .hide-desktop{
+      display: none; 
+    }
+  }}
+</style>
+
+<div id="{{ section.id }}" style=" {% if bg_checkbox %} background-image: url('{{ bg | img_url: '1280x711' }} )' {% else %} background: {{ bg_color }} {% endif %}">
+  <div class="container">
+    <div class="cms-block-inner">
+      {% for block in section.blocks %}
+        
+          {% liquid
+            assign image = block.settings.collection_img
+            assign btn = block.settings.collection_btn
+            assign btn_url = block.settings.collection_url
+            assign block_width = block.settings.column_width
+            assign btn_bg_color = block.settings.btn_bg_color
+            assign btn_color = block.settings.btn_color
+          %}
+
+         {% if image != blank %}
+          <div class="cms-item hide-tablet hide-mobile" style="width:{{ block_width }}%">
+            <div class="cms-item-inner">
+              <a href="{{ btn_url }}" > 
+                {% if btn_url %} 
+                  <span class="cms-item-link" style="background: {{ btn_bg_color }}; color: {{ btn_color  }}">
+                    <span  class="cms-item-link-text"> {{ btn }} </span> 
+                    <span class="cms-item-link-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.72 14.53a.75.75 0 0 1 0-1.06l3.47-3.47-3.47-3.47a.75.75 0 0 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z"/></svg>
+                    </span>
+                  </span>
+                {% endif %}
+                <div class="cms-item-image"><img src="{% if block_width == '50' %} {{ image | img_url: '650x450' }} {% else %} {{ image | img_url: '450x450' }} {% endif %}" alt="{{ image.alt }}" width="100%" height="auto"/></div>
+              </a>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if image != blank %}
+          <div class="cms-item hide-desktop hide-mobile" style="width:{{ block_width | times: 2 }}%">
+            <div class="cms-item-inner">
+               <a href="{{ btn_url }}" >
+                  {% if btn_url %} 
+                    <span class="cms-item-link" style="background: {{ btn_bg_color }}; color: {{ btn_color  }}">
+                      <span  class="cms-item-link-text"> {{ btn }} </span> 
+                      <span class="cms-item-link-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.72 14.53a.75.75 0 0 1 0-1.06l3.47-3.47-3.47-3.47a.75.75 0 0 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z"/></svg>
+                      </span>
+                    </span>
+                  {% endif %}
+                  <div class="cms-item-image"><img src="{% if block_width == '50' %} {{ image | img_url: '650x450' }} {% else %} {{ image | img_url: '450x450' }} {% endif %}" width="100%" height="auto"/></div>
+               </a>
+            </div>
+          </div>
+        {% endif %}
+
+        {% if image != blank %}
+          <div class="cms-item hide-tablet hide-desktop" style="width:100%">
+            <div class="cms-item-inner">
+               <a href="{{ btn_url }}" >
+                  {% if btn_url %} 
+                    <span class="cms-item-link" style="background: {{ btn_bg_color }}; color: {{ btn_color  }}">
+                      <span  class="cms-item-link-text"> {{ btn }} </span> 
+                      <span class="cms-item-link-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M7.72 14.53a.75.75 0 0 1 0-1.06l3.47-3.47-3.47-3.47a.75.75 0 0 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 0 1-1.06 0Z"/></svg>
+                      </span>
+                    </span>
+                  {% endif %}
+                  <div class="cms-item-image"><img src="{{ image | img_url: '450x450'  }}" alt="{{ image.alt }}" width="100%" height="auto"/></div>
+               </a>
+            </div>
+          </div>
+        {% endif %}
+
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Cms Block",
+    "blocks": [
+      {
+        "name": "box",
+        "type": "content",
+        "limit": 6,
+        "settings": [
+          {
+            "type": "select",
+            "id": "column_width",
+            "label": "Column Width",
+            "default": "25",
+            "options": [
+              {
+                "label": "One",
+                "value": "25",
+              },
+              {
+                "label": "Two",
+                "value": "50"
+              }
+            ]
+          },
+          {
+            "type": "image_picker",
+            "id": "collection_img",
+            "label": "Collection Image"
+          },
+          {
+            "type": "text",
+            "id": "collection_btn",
+            "label": "Button Text"
+          },
+          {
+            "type": "url",
+            "id": "collection_url",
+            "label": "Button Link"
+          },
+          {
+            "type": "color",
+            "id": "btn_bg_color",
+            "label": "Button Background",
+            "default": "#001f3f"
+          },
+          {
+            "type": "color",
+            "id": "btn_color",
+            "label": "Button Color",
+            "default": "#fff"
+          },
+          
+        ],
+      }
+    ],
+    "settings": [
+      {
+        "type": "range",
+        "id": "column_img_radius",
+        "label": "Column Image Border Radius",
+        "max": 100,
+        "min": 0,
+        "step": 1,
+        "unit": "px",
+        "default": 9,
+      },
+      {
+        "type": "checkbox",
+        "id": "section_bg_checkbox",
+        "label": "Background Image Show"
+      },
+      {
+        "type": "image_picker",
+        "id": "section_bg",
+        "label": "Section Background Image"
+      },
+      {
+        "type": "color",
+        "id": "section_bg_color",
+        "label": "Section Background Color"
+      },
+      {
+        "type": "range",
+        "id": "padding_top_bottom",
+        "label": "Padding Top Bottom",
+        "max": 120,
+        "min": 0,
+        "step": 10,
+        "unit": "px",
+        "default": 40,
+      },
+      {
+        "type": "range",
+        "id": "padding_left_right",
+        "label": "Padding Left Right",
+        "max": 120,
+        "min": 0,
+        "step": 10,
+        "unit": "px",
+        "default": 40,
+      },
+    ],
+    "presets": [
+      {
+        "name": "Cms Block"
+      }
+    ]
+  }
+{% endschema %}
